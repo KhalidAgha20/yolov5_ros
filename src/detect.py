@@ -211,7 +211,7 @@ if __name__ == "__main__":
 
     check_requirements(exclude=("tensorboard", "thop"))
     
-    rospy.init_node("yolov5", anonymous=True)
+    rospy.init_node("~node", anonymous=True)
     detector = Yolov5Detector()
     
     rospy.spin()
