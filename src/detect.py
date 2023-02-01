@@ -28,7 +28,7 @@ from utils.general import (
     check_img_size,
     check_requirements,
     non_max_suppression,
-    scale_coords
+    scale_boxes
 )
 from utils.plots import Annotator, colors
 from utils.torch_utils import select_device
@@ -138,7 +138,7 @@ class Yolov5Detector:
         annotator = Annotator(im0, line_width=self.line_thickness, example=str(self.names))
         if len(det):
             # Rescale boxes from img_size to im0 size
-            det[:, :4] = scale_coords(im.shape[2:], det[:, :4], im0.shape).round()
+            det[:, :4] = scale_boxes(im.shape[2:], det[:, :4], im0.shape).round()
 
             # Write results
             for *xyxy, conf, cls in reversed(det):
@@ -188,6 +188,23 @@ class Yolov5Detector:
         img = np.ascontiguousarray(img)
 
         return img, img0 
+
+    # # Added ALBERT
+    # def scale_coords(img1_shape, coords, img0_shape, ratio_pad=None):
+    #     # Rescale coords (xyxy) from img1_shape to img0_shape
+    #     if ratio_pad is None:  # calculate from img0_shape
+    #         gain = min(img1_shape[0] / img0_shape[0], img1_shape[1] / img0_shape[1])  # gain  = old / new
+    #         pad = (img1_shape[1] - img0_shape[1] * gain) / 2, (img1_shape[0] - img0_shape[0] * gain) / 2  # wh padding
+    #     else:
+    #         gain = ratio_pad[0][0]
+    #         pad = ratio_pad[1]
+
+    #     coords[:, [0, 2]] -= pad[0]  # x padding
+    #     coords[:, [1, 3]] -= pad[1]  # y padding
+    #     coords[:, :4] /= gain
+    #     clip_coords(coords, img0_shape)
+    #     return coords
+    # # Added ALBERT
 
 
 if __name__ == "__main__":
